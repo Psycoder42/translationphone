@@ -1,0 +1,33 @@
+{
+  "name": "translationphone",
+  "private": true,
+  "dependencies": {
+    "babel-core": "^6.26.3",
+    "babel-loader": "^7.1.5",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-react": "^6.24.1",
+    "immutable": "^3.8.2",
+    "react": "^16.4.2",
+    "react-dom": "^16.4.2",
+    "react-redux": "^5.0.7",
+    "redux": "^4.0.0",
+    "webpack": "^4.16.5",
+    "webpack-cli": "^3.1.0"
+  },
+  "description": "Translation Phone - The lost in translation game",
+  "version": "1.0.0",
+  "scripts": {
+    "devbuild": "webpack",
+    "heroku-postbuild": "webpack -p"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Psycoder42/translationphone.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/Psycoder42/translationphone/issues"
+  },
+  "homepage": "https://github.com/Psycoder42/translationphone#readme"
+}

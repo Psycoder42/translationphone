@@ -10,9 +10,19 @@ class TPButton extends Component {
 const mapDispatchToProps = function(dispatch){
   return {
     addString: function() {
-      dispatch({
-        type:'ADD_CHAIN',
-        chain: "Some Text"
+      fetch('/say', {
+        body: JSON.stringify({text: 'fat dumb and happy', hops: 3}),
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json()).then(data => {
+        console.log(data);
+        dispatch({
+          type:'ADD_CHAIN',
+          chain: "Some Text"
+        });
       });
     }
   }

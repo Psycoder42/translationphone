@@ -11,10 +11,11 @@ const runOnReady = () => {
   ReactDOM.render(
     <div>
       <Provider store={store}>
-        <div>
+        <main>
+          <h1 className="title">~ Translation Phone ~</h1>
           <TPForm/>
           <TPSequenceList/>
-        </div>
+        </main>
       </Provider>
     </div>,
     document.querySelector('.container')

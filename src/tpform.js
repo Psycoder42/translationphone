@@ -10,12 +10,17 @@ class TPForm extends Component {
     this.finishedLoding = this.finishedLoding.bind(this);
     this.submitForTransltion = this.submitForTransltion.bind(this);
   }
-  finishedLoding() {
+  finishedLoding(success) {
+    if (success) {
+      this.refs.phrase.value = '';
+      this.refs.hops.value = 3;
+    } else {
+      this.refs.phrase.value = 'ERROR! ERROR! Will Robinson!'
+    }
     this.setState({ translationPending: false });
   }
   submitForTransltion(event) {
     event.preventDefault();
-    console.log(this.refs);
     this.setState({ translationPending: true });
     this.props.getTranslations(
       this.refs.phrase.value,
@@ -28,9 +33,10 @@ class TPForm extends Component {
     return <form onSubmit={this.submitForTransltion}>
       <div className="columns">
         <div className="field column">
-          <label htmlFor="phrase" className="label">Starting Phrase</label>
+          <label htmlFor="phrase" className="label">Starting Phrase (max. 50 chars)</label>
           <div className="control">
-            <input className="input" type="text" id="phrase" ref="phrase" placeholder="Text input" required/>
+            <input className="input" type="text" id="phrase" ref="phrase"
+              placeholder="Text input" maxLength="50" required/>
           </div>
         </div>
         <div className="field column is-narrow">
@@ -56,7 +62,7 @@ class TPForm extends Component {
   }
 }
 
-const mapDispatchFunctions = function(dispatch){
+const mapDispatchFunctions = function(dispatch) {
   return {
     getTranslations: function(userText, numHops, callback) {
       fetch('/say', {
@@ -66,12 +72,21 @@ const mapDispatchFunctions = function(dispatch){
           'Accept': 'application/json, text/plain, */*',
           'Content-Type': 'application/json'
         }
-      }).then(res => res.json()).then(data => {
-        callback();
-        dispatch({
-          type:'ADD_CHAIN',
-          chain: data
-        });
+      }).then(res => {
+        if (res.status == 200) {
+          return res.json()
+        } else {
+          callback(false);
+          return null;
+        }
+      }).then(data => {
+        if (data != null) {
+          callback(true);
+          dispatch({
+            type:'ADD_CHAIN',
+            chain: data
+          });
+        }
       });
     }
   }

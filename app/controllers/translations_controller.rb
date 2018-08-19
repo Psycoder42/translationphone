@@ -4,7 +4,7 @@ class TranslationsController < ApplicationController
   def start
     begin
       # If everything goes well we can just return the results
-      render json: Translation.process(params)
+      render status: 200, json: Translation.process(params)
     rescue Exceptions::TPException => e
       # One of the exceptions we anticipated - return the embedded status and message
       render status: e.code, json: { message: e.message }

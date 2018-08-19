@@ -7,8 +7,11 @@ class Translation
     # Validate and clean the user input
     text = Cleaner.getParam(params, 'text')
     hops = Cleaner.getParam(params, 'hops', 'integer')
+    unless text.length <= 50
+      raise Exceptions::BadInput, "Parameter 'text' must be no more than 50 characters"
+    end
     unless (3..6) === hops
-      raise Exceptions::BadInput, "parameter 'hops' must be between 3 and 6 (inclusive)"
+      raise Exceptions::BadInput, "Parameter 'hops' must be between 3 and 6 (inclusive)"
     end
 
     if true

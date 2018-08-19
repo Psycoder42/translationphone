@@ -1,14 +1,35 @@
-@import url('https://fonts.googleapis.com/css?family=Podkova');
+@import url('https://fonts.googleapis.com/css?family=Podkova|Sunshiney');
 
 @import "./bulma.min.css";
+
+html {
+  background-color: tan;
+}
 
 body {
   font-family: 'Podkova', serif;
   font-size: 25px;
 }
 
+main {
+  display: flex;
+  flex-direction: column;
+}
+
+h1.title {
+  margin: 20px auto;
+  text-align: center;
+  font-size: 50px;
+  font-weight: normal;
+  font-family: 'Sunshiney', cursive;
+}
+
 form {
   margin: 15px;
+}
+
+.label {
+  color: blue;
 }
 
 .sequence-list {
@@ -17,16 +38,65 @@ form {
   align-items: stretch;
 }
 
-.sequence {
-  margin: 5px;
-  background-color: grey;
+.toggle, .toggle:focus, .remove-link, .remove-link:focus {
+  position: absolute;
+  top: 13px;
+  left: 5px;
+  cursor: pointer;
+  font-weight: bold;
+  background: none;
+  font-size: inherit;
+  padding: 0;
+  margin: 0;
+  border: 0;
+  width: 1em;
+  height: 1em;
+  color: dodgerblue;
+  outline: none;
 }
 
-.sequence:nth-child(odd) {
-  background-color: lightgrey;
+.remove-link, .remove-link:focus {
+  position: relative;
+  top: auto;
+  left: auto;
+  font-size: 14px;
+  align-self: center;
+}
+
+.sequence {
+  position: relative;
+  margin: 15px;
+  padding: 10px;
+  padding-left: 30px;
+  border-radius: 15px;
+  background-color: beige;
+}
+
+.hop, .chain-footer {
+  display: flex;
+  justify-content: space-between;
 }
 
 .submit {
   display: flex;
   align-items: center;
+}
+
+.credit, {
+  margin-top: 10px;
+  margin-bottom: -5px;
+}
+
+.path-lang:not(:first-child):before {
+  content: " ~ ";
+}
+
+.start-and-end svg {
+  width: .5em;
+  height: .6em;
+  margin: 0 10px;
+}
+
+.start-and-end svg path {
+  fill: forestgreen;
 }

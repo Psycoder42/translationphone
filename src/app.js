@@ -1,8 +1,8 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { Provider, connect } from 'react-redux';
-import { TPSequence } from './tpsequence.js';
-import { TPButton } from './tpbutton.js';
+import { TPSequenceList } from './tpsequencelist.js';
+import { TPForm } from './tpform.js';
 import store from './store.js';
 
 // To run after page loads
@@ -12,8 +12,8 @@ const runOnReady = () => {
     <div>
       <Provider store={store}>
         <div>
-          <TPButton/>
-          <TPSequence/>
+          <TPForm/>
+          <TPSequenceList/>
         </div>
       </Provider>
     </div>,

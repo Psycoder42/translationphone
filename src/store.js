@@ -12,7 +12,7 @@ const stateReducer = function(state = defaultState, action) {
   switch(action.type) {
     case 'ADD_CHAIN':
       // Set the chains array in the state to the existing chains plus the new one
-      return state.set('chains', [...state.get('chains'), action.chain])
+      return state.set('chains', [action.chain, ...state.get('chains')])
     default:
       // Return the unmodified state for unknown action types
       return state;

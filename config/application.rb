@@ -15,5 +15,11 @@ module Translationphone
     # Application configuration can go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded after loading
     # the framework and any gems in your application.
+
+    # Make sure the app can access the helper libraries
+    config.autoload_paths << "#{Rails.root}/app/lib"
+
+    # Handle my own errors
+    config.exceptions_app = self.routes
   end
 end

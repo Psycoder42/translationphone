@@ -32,6 +32,18 @@ form {
   color: blue;
 }
 
+.submit {
+  display: flex;
+  align-items: center;
+}
+
+.error-message {
+  color: maroon;
+  text-align: center;
+  text-transform: uppercase;
+  background-color: #FF5454;
+}
+
 .sequence-list {
   display: flex;
   flex-direction: column;
@@ -75,11 +87,6 @@ form {
 .hop, .chain-footer {
   display: flex;
   justify-content: space-between;
-}
-
-.submit {
-  display: flex;
-  align-items: center;
 }
 
 .credit, {

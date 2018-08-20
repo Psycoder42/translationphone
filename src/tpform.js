@@ -14,8 +14,6 @@ class TPForm extends Component {
     if (success) {
       this.refs.phrase.value = '';
       this.refs.hops.value = 3;
-    } else {
-      this.refs.phrase.value = 'ERROR! ERROR! Will Robinson!'
     }
     this.setState({ translationPending: false });
   }
@@ -29,6 +27,12 @@ class TPForm extends Component {
     )
   }
   render() {
+    let errorText = null;
+    if (this.props.errorMsg) {
+      errorText = <div className="error-message">
+        {this.props.errorMsg}
+      </div>
+    }
     let buttonClass = "button is-link" + (this.state.translationPending ? " is-loading" : "");
     return <form onSubmit={this.submitForTransltion}>
       <div className="columns">
@@ -58,13 +62,24 @@ class TPForm extends Component {
           </div>
         </div>
       </div>
+      {errorText}
     </form>
   }
 }
 
-const mapDispatchFunctions = function(dispatch) {
+const mapStateToProps = function(state) {
+  // Make sure to map the state that we care about
   return {
+    errorMsg: state.get('errorMessage')
+  }
+}
+
+const mapDispatchToProps = function(dispatch) {
+  return {
+    // Responsible for making the request to the server and setting the state
+    // correctly based on the success of failure of the call
     getTranslations: function(userText, numHops, callback) {
+      dispatch({ type:'REMOVE_ERROR_MSG' });
       fetch('/say', {
         body: JSON.stringify({text: userText, hops: numHops}),
         method: 'POST',
@@ -73,25 +88,29 @@ const mapDispatchFunctions = function(dispatch) {
           'Content-Type': 'application/json'
         }
       }).then(res => {
-        if (res.status == 200) {
-          return res.json()
-        } else {
-          callback(false);
-          return null;
-        }
+        // Include the http status with the result body
+        return res.json().then(body => ({ status: res.status, body: body }));
       }).then(data => {
-        if (data != null) {
+        if (data.status == 200) {
+          // Everything is fine. The body is our object
           callback(true);
           dispatch({
             type:'ADD_CHAIN',
-            chain: data
+            chain: data.body
+          });
+        } else {
+          // Something went wrong. The body has an error message in it.
+          callback(false);
+          dispatch({
+            type:'SET_ERROR_MSG',
+            errorMessage: data.body.message
           });
         }
-      });
+      })
     }
-  }
+  };
 }
 
-const ConnectedTPForm = connect(null, mapDispatchFunctions)(TPForm);
+const ConnectedTPForm = connect(mapStateToProps, mapDispatchToProps)(TPForm);
 
 export { ConnectedTPForm as TPForm };

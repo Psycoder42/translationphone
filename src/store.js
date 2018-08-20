@@ -10,37 +10,56 @@ const defaultState = Map({
 
 // The function that knows how each action affects the state
 const stateReducer = function(state = defaultState, action) {
-  let stateRef = state
-  // Any action except the ERROR_MSG actions will clear the error state
-  if (!action.type.match(/ERROR_MSG/)) {
-    stateRef = stateReducer(state, { type: 'REMOVE_ERROR_MSG' });
-  }
+  let updatedChains = null;
+  let updatedExpanded = null;
   // Now perform the requested action
   switch(action.type) {
     case 'ADD_CHAIN':
-      // Set the chains array in the state to the existing chains plus the new one
-      let ac_temp = stateRef.set('chains', [action.chain, ...stateRef.get('chains')]);
-      // Then add a new expanded boolean to the expanded list
-      return ac_temp.set('expanded', [false, ...stateRef.get('expanded')]);
+      // Set the chains array to the existing chains plus the new one
+      updatedChains = [action.chain, ...state.get('chains')];
+      // Add a new expanded boolean to the expanded list
+      updatedExpanded = [false, ...state.get('expanded')];
+      // Also clear the error message
+      return state.withMutations(function(mutatable) {
+        mutatable.set('errorMessage', null);
+        mutatable.set('chains', updatedChains);
+        mutatable.set('expanded', updatedExpanded);
+      });
     case 'REMOVE_CHAIN':
-      // Set the chains array in the state to the existing chains plus the new one
-      let rc_temp = stateRef.set('chains', [action.chain, ...stateRef.get('chains')]);
-      // Then add a new expanded boolean to the expanded list
-      return rc_temp.set('expanded', [false, ...stateRef.get('expanded')]);
+      // Remove the appropriate chain from the chains array
+      updatedChains = [
+        ...state.get('chains').slice(0, action.index),
+        ...state.get('chains').slice(action.index+1)
+      ];
+      // Remove the appropriate expanded boolean from the expanded list
+      updatedExpanded = [
+        ...state.get('expanded').slice(0, action.index),
+        ...state.get('expanded').slice(action.index+1)
+      ];
+      // Also clear the error message
+      return state.withMutations(function(mutatable) {
+        mutatable.set('errorMessage', null);
+        mutatable.set('chains', updatedChains);
+        mutatable.set('expanded', updatedExpanded);
+      });
     case 'REMOVE_ERROR_MSG':
       // Set an error messages
-      return stateRef.set('errorMessage', null);
+      return state.set('errorMessage', null);
     case 'SET_ERROR_MSG':
       // Set an error messages
-      return stateRef.set('errorMessage', action.errorMessage);
+      return state.set('errorMessage', action.errorMessage);
     case 'SET_EXPAND':
       // Update the particular expanded index with the new value
-      let updatedExpanded = [
-        ...stateRef.get('expanded').slice(0, action.index),
+      updatedExpanded = [
+        ...state.get('expanded').slice(0, action.index),
         action.expanded,
-        ...stateRef.get('expanded').slice(action.index+1)
+        ...state.get('expanded').slice(action.index+1)
       ];
-      return stateRef.set('expanded', updatedExpanded);
+      // Also clear the error message
+      return state.withMutations(function(mutatable) {
+        mutatable.set('errorMessage', null);
+        mutatable.set('expanded', updatedExpanded);
+      });
     default:
       // Return the unmodified state for unknown action types
       return state;

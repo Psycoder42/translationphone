@@ -6,7 +6,13 @@ import { SVGArrow } from './svgarrow.js';
 class TPSequence extends Component {
   constructor(props) {
     super(props);ending: false
+    this.deleteChain = this.deleteChain.bind(this);
     this.toggleDetails = this.toggleDetails.bind(this);
+  }
+  deleteChain() {
+    this.props.removeChain(
+      this.props.chainIdx
+    )
   }
   toggleDetails() {
     this.props.toggleExpanded(
@@ -54,7 +60,7 @@ class TPSequence extends Component {
       <button className="toggle" onClick={this.toggleDetails}>{toggleText}</button>
       {content}
       <div className="chain-footer">
-        <button className="remove-link">[remove]</button>
+        <button className="remove-link" onClick={this.deleteChain}>[remove]</button>
         <div className="credit">
           Powered by&nbsp;<a href="http://translate.yandex.com/" target="_blank">Yandex.Translate</a>
         </div>
@@ -78,6 +84,12 @@ const mapDispatchToProps = function(dispatch) {
         type:'SET_EXPAND',
         index: index,
         expanded: isExpanded
+      });
+    },
+    removeChain: function(index) {
+      dispatch({
+        type:'REMOVE_CHAIN',
+        index: index
       });
     }
   }

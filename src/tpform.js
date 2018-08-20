@@ -40,14 +40,14 @@ class TPForm extends Component {
           <label htmlFor="phrase" className="label">Starting Phrase (max. 50 chars)</label>
           <div className="control">
             <input className="input" type="text" id="phrase" ref="phrase"
-              placeholder="Text input" maxLength="50" required/>
+              placeholder="Text input" maxLength="50" disabled={this.state.translationPending} required/>
           </div>
         </div>
         <div className="field column is-narrow">
           <label htmlFor="hops" className="label">Hops</label>
           <div className="control">
             <div className="select">
-              <select ref="hops">
+              <select ref="hops" disabled={this.state.translationPending}>
                 <option>3</option>
                 <option>4</option>
                 <option>5</option>

@@ -10,9 +10,10 @@ const defaultState = Map({
 
 // The function that knows how each action affects the state
 const stateReducer = function(state = defaultState, action) {
+  // Define these at the top otherwise webpack complains about redefining them
   let updatedChains = null;
   let updatedExpanded = null;
-  // Now perform the requested action
+  // Perform the requested action
   switch(action.type) {
     case 'ADD_CHAIN':
       // Set the chains array to the existing chains plus the new one
@@ -66,6 +67,6 @@ const stateReducer = function(state = defaultState, action) {
   }
 }
 
+// Create and export the store
 let store = createStore(stateReducer);
-
 export default store;

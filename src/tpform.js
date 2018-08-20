@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import { connect } from 'react-redux';
 
+// Represents the form for requesting translations
 class TPForm extends Component {
+  // Initialize the class and the local state and perform the necessary binds
   constructor(props) {
     super(props);
     this.state = {
@@ -10,6 +12,7 @@ class TPForm extends Component {
     this.finishedLoding = this.finishedLoding.bind(this);
     this.submitForTransltion = this.submitForTransltion.bind(this);
   }
+  // Reset the form after a translation call returns
   finishedLoding(success) {
     if (success) {
       this.refs.phrase.value = '';
@@ -17,6 +20,7 @@ class TPForm extends Component {
     }
     this.setState({ translationPending: false });
   }
+  // Submit the form to the translation API
   submitForTransltion(event) {
     event.preventDefault();
     this.setState({ translationPending: true });
@@ -26,14 +30,18 @@ class TPForm extends Component {
       this.finishedLoding
     )
   }
+  // Render the component
   render() {
+    // Create the errorText JSX (or not) based on the presense of an error message
     let errorText = null;
     if (this.props.errorMsg) {
       errorText = <div className="error-message">
         {this.props.errorMsg}
       </div>
     }
+    // Set the button class to include is-loading if the user sent a request and is waiting for the result
     let buttonClass = "button is-link" + (this.state.translationPending ? " is-loading" : "");
+    // Return the form HTML
     return <form onSubmit={this.submitForTransltion}>
       <div className="columns">
         <div className="field column">
@@ -67,6 +75,7 @@ class TPForm extends Component {
   }
 }
 
+// For getting values out of the state
 const mapStateToProps = function(state) {
   // Make sure to map the state that we care about
   return {
@@ -74,10 +83,11 @@ const mapStateToProps = function(state) {
   }
 }
 
+// For manipulating the state
 const mapDispatchToProps = function(dispatch) {
   return {
     // Responsible for making the request to the server and setting the state
-    // correctly based on the success of failure of the call
+    // correctly based on the success or failure of the call
     getTranslations: function(userText, numHops, callback) {
       dispatch({ type:'REMOVE_ERROR_MSG' });
       fetch('/say', {
@@ -111,6 +121,8 @@ const mapDispatchToProps = function(dispatch) {
   };
 }
 
+// Connect to the store to access the state
 const ConnectedTPForm = connect(mapStateToProps, mapDispatchToProps)(TPForm);
 
+// Export this component
 export { ConnectedTPForm as TPForm };

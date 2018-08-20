@@ -3,29 +3,35 @@ import { connect } from 'react-redux';
 import { TPHop } from './tphop.js';
 import { SVGArrow } from './svgarrow.js';
 
+// Represents the full translation chain of a phrase
 class TPSequence extends Component {
+  // Initialize the class and perform the necessary binds
   constructor(props) {
     super(props);ending: false
     this.deleteChain = this.deleteChain.bind(this);
     this.toggleDetails = this.toggleDetails.bind(this);
   }
+  // Delete this chain from the state
   deleteChain() {
     this.props.removeChain(
       this.props.chainIdx
     )
   }
+  // Expand or collapse this chain
   toggleDetails() {
     this.props.toggleExpanded(
       this.props.chainIdx,
       !this.props.expanded[this.props.chainIdx]
     )
   }
+  // Render this component
   render() {
+    // Init some variable to use later
     let toggleText = null;
     let content = null;
     let classes = "sequence"
     let chain = this.props.chains[this.props.chainIdx];
-    // Determin what the sequence should look like
+    // Determine what the sequence should look like
     if (this.props.expanded[this.props.chainIdx]) {
         // Expanded so show the details of all the hops
         toggleText = '-'
@@ -69,6 +75,7 @@ class TPSequence extends Component {
   }
 }
 
+// For getting values out of the state
 const mapStateToProps = function(state) {
   // Make sure to map the state that we care about
   return {
@@ -77,6 +84,7 @@ const mapStateToProps = function(state) {
   }
 }
 
+// For manipulating the state
 const mapDispatchToProps = function(dispatch) {
   return {
     toggleExpanded: function(index, isExpanded) {
@@ -95,6 +103,8 @@ const mapDispatchToProps = function(dispatch) {
   }
 }
 
+// Connect to the store to access the state
 const ConnectedTPSequence = connect(mapStateToProps, mapDispatchToProps)(TPSequence);
 
+// Export this component
 export { ConnectedTPSequence as TPSequence };

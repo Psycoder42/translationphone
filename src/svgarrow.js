@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+// A right-pointing arrow created with svg
 class SVGArrow extends Component {
   render() {
     return <svg viewBox="0 0 67.72 62.877">
@@ -10,4 +11,5 @@ class SVGArrow extends Component {
   }
 }
 
+// Export this component
 export { SVGArrow };

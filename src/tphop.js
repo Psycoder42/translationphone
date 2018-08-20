@@ -1,5 +1,6 @@
 import React, { Component } from 'react';
 
+// Represents one translation result
 class TPHop extends Component {
   render() {
     return <div className="hop">
@@ -12,4 +13,5 @@ class TPHop extends Component {
   }
 }
 
+// Export this component
 export { TPHop };

@@ -18,5 +18,8 @@ module Translationphone
 
     # Make sure the app can access the helper libraries
     config.autoload_paths << "#{Rails.root}/app/lib"
+
+    # Handle my own errors
+    config.exceptions_app = self.routes
   end
 end

@@ -98,8 +98,18 @@ module Languages
     yi: "Yiddish"
   }
 
-  def self.getAllLangs
-    return ALL_LANGS
+  FIRST_HOP_LANGUAGES = {
+    zh: "Chinese",
+    hi: "Hindi",
+    ja: "Japanese",
+    ko: "Korean",
+    ru: "Russian",
+    vi: "Vietnamese",
+  }
+
+  def self.getRandomFirstLang()
+    keys = FIRST_HOP_LANGUAGES.keys
+    return keys[rand(keys.length)]
   end
 
   def self.getRandomLang(except=[])

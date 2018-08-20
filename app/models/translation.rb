@@ -40,7 +40,11 @@ class Translation
     while hop_num < hops do
       last_lang = results[-1][:language]
       # Pick a random language we haven't used yet
-      rand_lang = Languages.getRandomLang(used_langs)
+      if used_langs.length == 0
+        rand_lang = Languages.getRandomFirstLang()
+      else
+        rand_lang = Languages.getRandomLang(used_langs)
+      end
       # Translate into that random language
       lang_str = (last_lang.nil? ? rand_lang.to_s : "#{last_lang.to_s}-#{rand_lang.to_s}")
       hop_result = self.translate(results[-1][:text], lang_str)

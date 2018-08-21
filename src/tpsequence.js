@@ -10,10 +10,18 @@ class TPSequence extends Component {
     super(props);ending: false
     this.deleteChain = this.deleteChain.bind(this);
     this.toggleDetails = this.toggleDetails.bind(this);
+    this.submitForSave = this.submitForSave.bind(this);
   }
   // Delete this chain from the state
   deleteChain() {
     this.props.removeChain(
+      this.props.chainIdx
+    )
+  }
+  // Save this chain to the DB
+  submitForSave() {
+    this.props.saveChain(
+      this.props.chains[this.props.chainIdx],
       this.props.chainIdx
     )
   }
@@ -61,12 +69,20 @@ class TPSequence extends Component {
         </div>
       </div>
     }
+    // Determine what the save button should be
+    let saveButton = <button className="save-link" onClick={this.submitForSave}>[save]</button>
+    if (this.props.wasSaved[this.props.chainIdx]) {
+      saveButton = <button className="save-link disabled">[saved]</button>
+    }
     // Return the sequence with the correct contents
     return <div className={classes}>
       <button className="toggle" onClick={this.toggleDetails}>{toggleText}</button>
       {content}
       <div className="chain-footer">
-        <button className="remove-link" onClick={this.deleteChain}>[remove]</button>
+        <div className="footer-butons">
+          <button className="remove-link" onClick={this.deleteChain}>[remove]</button>
+          {saveButton}
+        </div>
         <div className="credit">
           Powered by&nbsp;<a href="http://translate.yandex.com/" target="_blank">Yandex.Translate</a>
         </div>
@@ -80,7 +96,8 @@ const mapStateToProps = function(state) {
   // Make sure to map the state that we care about
   return {
     chains: state.get('chains'),
-    expanded: state.get('expanded')
+    expanded: state.get('expanded'),
+    wasSaved: state.get('wasSaved')
   }
 }
 
@@ -89,15 +106,37 @@ const mapDispatchToProps = function(dispatch) {
   return {
     toggleExpanded: function(index, isExpanded) {
       dispatch({
-        type:'SET_EXPAND',
+        type: 'SET_EXPAND',
         index: index,
         expanded: isExpanded
       });
     },
     removeChain: function(index) {
       dispatch({
-        type:'REMOVE_CHAIN',
+        type: 'REMOVE_CHAIN',
         index: index
+      });
+    },
+    saveChain: function(chain, index) {
+      fetch('/save', {
+        body: JSON.stringify({"chain": chain}),
+        method: 'POST',
+        headers: {
+          'Accept': 'application/json, text/plain, */*',
+          'Content-Type': 'application/json'
+        }
+      }).then(res => {
+        if (res.status == 200) {
+          dispatch({
+            type: 'SET_SAVED',
+            index: index
+          });
+        } else {
+          dispatch({
+            type: 'SET_ERROR_MSG',
+            errorMessage: 'Failed to save due to unknown error'
+          });
+        }
       });
     }
   }

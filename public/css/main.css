@@ -3,7 +3,7 @@
 @import "./bulma.min.css";
 
 html {
-  background-color: tan;
+  background-color: oldlace;
 }
 
 body {
@@ -11,7 +11,7 @@ body {
   font-size: 25px;
 }
 
-main {
+main, .main-view {
   display: flex;
   flex-direction: column;
 }
@@ -24,12 +24,20 @@ h1.title {
   font-family: 'Sunshiney', cursive;
 }
 
+h3.subtitle {
+  padding: 0;
+  text-align: center;
+  margin-bottom: 10px;
+  font-size: 30px;
+  font-family: 'Sunshiney', cursive;
+}
+
 form {
   margin: 15px;
 }
 
 .label {
-  color: blue;
+  color: forestgreen;
 }
 
 .submit {
@@ -50,7 +58,7 @@ form {
   align-items: stretch;
 }
 
-.toggle, .toggle:focus, .remove-link, .remove-link:focus {
+.toggle, .toggle:focus {
   position: absolute;
   top: 13px;
   left: 5px;
@@ -67,12 +75,27 @@ form {
   outline: none;
 }
 
-.remove-link, .remove-link:focus {
-  position: relative;
-  top: auto;
-  left: auto;
+.remove-link, .remove-link:focus, .save-link, .save_link:focus {
+  padding: 0;
+  margin: 5px 10px;
+  border: 0;
+  color: dodgerblue;
+  outline: none;
+  background: none;
+  cursor: pointer;
   font-size: 14px;
-  align-self: center;
+  height: 1em;
+}
+
+.toggle-view, .toggle-view:focus {
+  padding: 0;
+  margin: 0;
+  border: 0;
+  color: dodgerblue;
+  outline: none;
+  background: none;
+  font-size: 16px;
+  cursor: pointer;
 }
 
 .sequence {
@@ -81,11 +104,17 @@ form {
   padding: 10px;
   padding-left: 30px;
   border-radius: 15px;
-  background-color: beige;
+  background-color: gainsboro;
 }
 
-.hop, .chain-footer {
+.hop {
   display: flex;
+  justify-content: space-between;
+}
+
+.chain-footer {
+  display: flex;
+  align-items: flex-end;
   justify-content: space-between;
 }
 
@@ -106,4 +135,24 @@ form {
 
 .start-and-end svg path {
   fill: forestgreen;
+}
+
+button.disabled {
+  color: dimgray;
+  cursor: auto;
+}
+
+.like-count {
+  margin-left: 5px;
+}
+
+.like-button {
+  cursor: pointer;
+  transform: translateY(5px);
+}
+
+.dislike-button {
+  margin-left: 30px;
+  cursor: pointer;
+  transform: translateY(15px);
 }

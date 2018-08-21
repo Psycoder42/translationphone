@@ -2,7 +2,7 @@ module Pagable
   extend ActiveSupport::Concern
 
   DEFAULT_PAGE = 1
-  DEFAULT_SIZE = 5
+  DEFAULT_SIZE = 10
   MIN_SIZE = 5
   MAX_SIZE = 20
 

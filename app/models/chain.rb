@@ -9,7 +9,27 @@ class Chain < ApplicationRecord
     # Validate and clean user input
     limitOffset = self.getLimitAndOffset(params)
     # Search for the chains
-    return Chain.joins(:hops).select('chains.*, hops.text, hops.language, hops.language_name').order('hops.hop_num ASC').limit(limitOffset[0]).offset(limitOffset[1])
+    self.ensurePreparedStatement()
+    results = ActiveRecord::Base.connection.raw_connection.exec_prepared('chain_select', limitOffset)
+    # Build up the json response
+    resList = []
+    results.each do |result|
+      if resList.length == 0 || resList.last[:id] != result["id"]
+        resList.push({
+          "id": result["id"],
+          "likes": result["likes"],
+          "dislikes": result["dislikes"],
+          "chain": []
+        })
+      end
+      resList.last[:chain].push({
+        "text": result["text"],
+        "language": result["language"],
+        "language_name": result["language_name"]
+      })
+    end
+    # Return the array of results
+    return resList
   end
 
   # Save a translation chain
@@ -97,6 +117,43 @@ class Chain < ApplicationRecord
     end
     # Return a success message
     return { message: "success" }
+  end
+
+  private
+
+  # Get the prepared statement
+  def self.ensurePreparedStatement
+    sql_string = <<-SQL
+      SELECT *
+      FROM (
+        SELECT *
+        FROM chains
+        ORDER BY likes DESC, dislikes ASC, id ASC
+        LIMIT $1
+        OFFSET $2
+      ) AS some_chains
+      LEFT JOIN (
+        SELECT
+          chain_id,
+          hop_num,
+          text,
+          language,
+          language_name
+        FROM hops
+        ORDER BY chain_id, hop_num ASC
+      ) AS sorted_hops
+        ON some_chains.id=sorted_hops.chain_id
+      ORDER BY
+        some_chains.likes DESC,
+        some_chains.dislikes ASC,
+        some_chains.id ASC,
+        sorted_hops.hop_num ASC
+    SQL
+    begin
+      ActiveRecord::Base.connection.raw_connection.prepare('chain_select', sql_string)
+    rescue PG::DuplicatePstatement => e
+      # This is fine... it just means we already prepared it
+    end
   end
 
 end

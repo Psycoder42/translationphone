@@ -9,9 +9,13 @@ class TPSequenceList extends Component {
     if (this.props.viewingSaved) {
       return <div className="sequence-list">
         {
-          this.props.results.map((result, index) => {
-            return <TPSavedSequence key={index} resultIdx={index}/>
-          })
+          this.props.results.length==0
+          ?
+            <span className="no-results">No Results Found</span>
+          :
+            this.props.results.map((result, index) => {
+              return <TPSavedSequence key={index} resultIdx={index}/>
+            })
         }
       </div>
     } else {

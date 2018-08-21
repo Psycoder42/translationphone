@@ -10,7 +10,7 @@ const defaultState = Map({
   query_results: null,
   errorMessage: null,
   viewingSaved: false,
-  resultsPerPage: 10,
+  resultsPerPage: 5,
   pageNumber: 1
 });
 

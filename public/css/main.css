@@ -87,7 +87,10 @@ form {
   height: 1em;
 }
 
-.toggle-view, .toggle-view:focus {
+.toggle-view, .toggle-view:focus,
+.refresh-button, .refresh-button:focus,
+.last-page, .last-page:focus,
+.next-page, .next-page:focus {
   padding: 0;
   margin: 0;
   border: 0;
@@ -118,6 +121,23 @@ form {
   justify-content: space-between;
 }
 
+.result-nav {
+  display: flex;
+  margin-top: 20px;
+  padding: 10 20px;
+  justify-content: space-between;
+}
+
+.page-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.cur-page-num {
+  margin: 0 15px;
+}
+
 .credit {
   margin-top: 10px;
   margin-bottom: -5px;
@@ -137,7 +157,7 @@ form {
   fill: forestgreen;
 }
 
-button.disabled {
+button.disabled, button.disabled:focus {
   color: dimgray;
   cursor: auto;
 }
@@ -155,4 +175,8 @@ button.disabled {
   margin-left: 30px;
   cursor: pointer;
   transform: translateY(15px);
+}
+
+.no-results {
+  text-align: center;
 }

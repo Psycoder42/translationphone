@@ -14,19 +14,6 @@ class Translation
       raise Exceptions::BadInput, "Parameter 'hops' must be between 3 and 6 (inclusive)"
     end
 
-    if true
-      # STUB OUT THE RESULTS TO SAVE ON API USAGE DURING DEVELOPMENT
-      # THIS IS AN ACTUAL RESULT FROM A TEST RUN
-      # simulate the slowness of the actual API
-      sleep(3)
-      return [
-        {"language":"en","language_name":"English","text":"fat dumb and happy"},
-        {"language":"xh","language_name":"Xhosa","text":"fat esisimumu kwaye ndonwabe"},
-        {"language":"zh","language_name":"Chinese","text":"脂肪愚蠢的和快乐"},
-        {"language":"en","language_name":"English","text":"Fat stupid and happy"}
-      ]
-    end
-
     # Prime the results object
     results = [{
       language: nil,

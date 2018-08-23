@@ -70,8 +70,10 @@ module Cleaner
     # Return nil as soon as somthing wrong is found
     # Make sure the outer object is an array
     return nil unless self.isArray(chain)
-    # Make sure that there are only 3 to 6 children (allowed number of hops)
-    return nil unless ( chain.length>=3 && chain.length<=6 )
+    # Make sure that there are only 4 to 7 children (allowed number of hops)
+    # The UI askes for 3 to 6 hops but since there is a start and end, there will
+    # be one more record than hops: A -(1)-> B -(2)-> C -(3)-> D = 3 hops, 4 records
+    return nil unless ( chain.length>=4 && chain.length<=7 )
     # Convert all of the hops to json
     result = chain.map do |hop|
       hop.as_json
